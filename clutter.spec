@@ -4,7 +4,7 @@
 #
 Name     : clutter
 Version  : 1.26.0
-Release  : 3
+Release  : 4
 URL      : https://download.gnome.org/core/3.20/3.20.2/sources/clutter-1.26.0.tar.xz
 Source0  : https://download.gnome.org/core/3.20/3.20.2/sources/clutter-1.26.0.tar.xz
 Summary  : Clutter Core Library
@@ -92,7 +92,8 @@ locales components for the clutter package.
 %build
 export LANG=C
 %configure --disable-static --enable-wayland-backend=yes \
---enable-wayland-compositor=yes
+--enable-wayland-compositor=yes \
+--enable-evdev-input=yes
 make V=1  %{?_smp_mflags}
 
 %install

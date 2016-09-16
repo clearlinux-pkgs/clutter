@@ -1610,6 +1610,12 @@ libclutter-1.0.so.0:clutter_vertex_free
 libclutter-1.0.so.0:clutter_vertex_get_type
 libclutter-1.0.so.0:clutter_vertex_init
 libclutter-1.0.so.0:clutter_vertex_new
+libclutter-1.0.so.0:clutter_wayland_disable_event_retrieval
+libclutter-1.0.so.0:clutter_wayland_input_device_get_wl_seat
+libclutter-1.0.so.0:clutter_wayland_set_display
+libclutter-1.0.so.0:clutter_wayland_stage_get_wl_shell_surface
+libclutter-1.0.so.0:clutter_wayland_stage_get_wl_surface
+libclutter-1.0.so.0:clutter_wayland_stage_set_wl_surface
 libclutter-1.0.so.0:clutter_x11_add_filter
 libclutter-1.0.so.0:clutter_x11_disable_event_retrieval
 libclutter-1.0.so.0:clutter_x11_enable_xinput

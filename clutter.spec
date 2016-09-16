@@ -4,16 +4,16 @@
 #
 Name     : clutter
 Version  : 1.26.0
-Release  : 4
+Release  : 5
 URL      : https://download.gnome.org/core/3.20/3.20.2/sources/clutter-1.26.0.tar.xz
 Source0  : https://download.gnome.org/core/3.20/3.20.2/sources/clutter-1.26.0.tar.xz
 Summary  : Clutter Core Library
 Group    : Development/Tools
 License  : LGPL-2.1
 Requires: clutter-lib
+Requires: clutter-data
 Requires: clutter-doc
 Requires: clutter-locales
-Requires: clutter-data
 BuildRequires : compositeproto-dev
 BuildRequires : docbook-xml
 BuildRequires : gettext
@@ -21,6 +21,7 @@ BuildRequires : gobject-introspection-dev
 BuildRequires : gtk-doc
 BuildRequires : gtk-doc-dev
 BuildRequires : libXcomposite-dev
+BuildRequires : libevdev-dev
 BuildRequires : libxslt-bin
 BuildRequires : perl(XML::Parser)
 BuildRequires : pkgconfig(cogl-1.0)

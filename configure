@@ -1,3 +1,6 @@
 --enable-wayland-backend=yes
 --enable-wayland-compositor=yes
 --enable-evdev-input=yes
+--enable-gdk-backend=yes
+--enable-egl-backend=yes
+--enable-xinput

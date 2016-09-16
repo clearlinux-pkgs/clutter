@@ -1,1 +1,2 @@
 --enable-wayland-backend=yes
+--enable-wayland-compositor=yes

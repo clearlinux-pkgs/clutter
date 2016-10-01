@@ -4,14 +4,13 @@
 #
 Name     : clutter
 Version  : 1.26.0
-Release  : 9
+Release  : 10
 URL      : https://download.gnome.org/core/3.20/3.20.2/sources/clutter-1.26.0.tar.xz
 Source0  : https://download.gnome.org/core/3.20/3.20.2/sources/clutter-1.26.0.tar.xz
 Summary  : Clutter Core Library
 Group    : Development/Tools
 License  : LGPL-2.1
 Requires: clutter-lib
-Requires: clutter-data
 Requires: clutter-doc
 Requires: clutter-locales
 BuildRequires : compositeproto-dev
@@ -43,19 +42,10 @@ BuildRequires : sed
 Clutter is an open source software library for creating fast, compelling,
 portable, and dynamic graphical user interfaces.
 
-%package data
-Summary: data components for the clutter package.
-Group: Data
-
-%description data
-data components for the clutter package.
-
-
 %package dev
 Summary: dev components for the clutter package.
 Group: Development
 Requires: clutter-lib
-Requires: clutter-data
 Provides: clutter-devel
 
 %description dev
@@ -73,7 +63,6 @@ doc components for the clutter package.
 %package lib
 Summary: lib components for the clutter package.
 Group: Libraries
-Requires: clutter-data
 
 %description lib
 lib components for the clutter package.
@@ -107,13 +96,6 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-
-%files data
-%defattr(-,root,root,-)
-/usr/share/gir-1.0/Cally-1.0.gir
-/usr/share/gir-1.0/Clutter-1.0.gir
-/usr/share/gir-1.0/ClutterGdk-1.0.gir
-/usr/share/gir-1.0/ClutterX11-1.0.gir
 
 %files dev
 %defattr(-,root,root,-)
@@ -266,6 +248,7 @@ rm -rf %{buildroot}
 /usr/lib64/girepository-1.0/ClutterGdk-1.0.typelib
 /usr/lib64/girepository-1.0/ClutterX11-1.0.typelib
 /usr/lib64/pkgconfig/*.pc
+/usr/share/gir-1.0/*.gir
 
 %files doc
 %defattr(-,root,root,-)

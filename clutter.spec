@@ -4,12 +4,13 @@
 #
 Name     : clutter
 Version  : 1.26.0
-Release  : 10
+Release  : 11
 URL      : https://download.gnome.org/core/3.20/3.20.2/sources/clutter-1.26.0.tar.xz
 Source0  : https://download.gnome.org/core/3.20/3.20.2/sources/clutter-1.26.0.tar.xz
 Summary  : Clutter Core Library
 Group    : Development/Tools
 License  : LGPL-2.1
+Requires: clutter-data
 Requires: clutter-lib
 Requires: clutter-doc
 Requires: clutter-locales
@@ -42,10 +43,19 @@ BuildRequires : sed
 Clutter is an open source software library for creating fast, compelling,
 portable, and dynamic graphical user interfaces.
 
+%package data
+Summary: data components for the clutter package.
+Group: Data
+
+%description data
+data components for the clutter package.
+
+
 %package dev
 Summary: dev components for the clutter package.
 Group: Development
 Requires: clutter-lib
+Requires: clutter-data
 Provides: clutter-devel
 
 %description dev
@@ -63,6 +73,7 @@ doc components for the clutter package.
 %package lib
 Summary: lib components for the clutter package.
 Group: Libraries
+Requires: clutter-data
 
 %description lib
 lib components for the clutter package.
@@ -81,6 +92,7 @@ locales components for the clutter package.
 
 %build
 export LANG=C
+export SOURCE_DATE_EPOCH=1491313170
 %configure --disable-static --enable-wayland-backend=yes \
 --enable-wayland-compositor=yes \
 --enable-evdev-input=yes \
@@ -90,12 +102,21 @@ export LANG=C
 make V=1  %{?_smp_mflags}
 
 %install
+export SOURCE_DATE_EPOCH=1491313170
 rm -rf %{buildroot}
 %make_install
 %find_lang clutter-1.0
 
 %files
 %defattr(-,root,root,-)
+
+%files data
+%defattr(-,root,root,-)
+/usr/lib64/girepository-1.0/Cally-1.0.typelib
+/usr/lib64/girepository-1.0/Clutter-1.0.typelib
+/usr/lib64/girepository-1.0/ClutterGdk-1.0.typelib
+/usr/lib64/girepository-1.0/ClutterX11-1.0.typelib
+/usr/share/gir-1.0/*.gir
 
 %files dev
 %defattr(-,root,root,-)
@@ -242,13 +263,17 @@ rm -rf %{buildroot}
 /usr/include/clutter-1.0/clutter/wayland/clutter-wayland.h
 /usr/include/clutter-1.0/clutter/x11/clutter-x11-texture-pixmap.h
 /usr/include/clutter-1.0/clutter/x11/clutter-x11.h
-/usr/lib64/*.so
-/usr/lib64/girepository-1.0/Cally-1.0.typelib
-/usr/lib64/girepository-1.0/Clutter-1.0.typelib
-/usr/lib64/girepository-1.0/ClutterGdk-1.0.typelib
-/usr/lib64/girepository-1.0/ClutterX11-1.0.typelib
-/usr/lib64/pkgconfig/*.pc
-/usr/share/gir-1.0/*.gir
+/usr/lib64/libclutter-1.0.so
+/usr/lib64/libclutter-glx-1.0.so
+/usr/lib64/pkgconfig/cally-1.0.pc
+/usr/lib64/pkgconfig/clutter-1.0.pc
+/usr/lib64/pkgconfig/clutter-cogl-1.0.pc
+/usr/lib64/pkgconfig/clutter-egl-1.0.pc
+/usr/lib64/pkgconfig/clutter-gdk-1.0.pc
+/usr/lib64/pkgconfig/clutter-glx-1.0.pc
+/usr/lib64/pkgconfig/clutter-wayland-1.0.pc
+/usr/lib64/pkgconfig/clutter-wayland-compositor-1.0.pc
+/usr/lib64/pkgconfig/clutter-x11-1.0.pc
 
 %files doc
 %defattr(-,root,root,-)
@@ -450,8 +475,10 @@ rm -rf %{buildroot}
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/*.so.*
+/usr/lib64/libclutter-1.0.so.0
+/usr/lib64/libclutter-1.0.so.0.2600.0
+/usr/lib64/libclutter-glx-1.0.so.0
 
-%files locales -f clutter-1.0.lang 
+%files locales -f clutter-1.0.lang
 %defattr(-,root,root,-)
 

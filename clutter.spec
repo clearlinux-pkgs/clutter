@@ -4,7 +4,7 @@
 #
 Name     : clutter
 Version  : 1.26.2
-Release  : 14
+Release  : 15
 URL      : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.2.tar.xz
 Source0  : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.2.tar.xz
 Summary  : Clutter Core Library
@@ -28,14 +28,18 @@ BuildRequires : pkgconfig(cogl-1.0)
 BuildRequires : pkgconfig(egl)
 BuildRequires : pkgconfig(gdk-3.0)
 BuildRequires : pkgconfig(gdk-pixbuf-2.0)
+BuildRequires : pkgconfig(gudev-1.0)
 BuildRequires : pkgconfig(json-glib-1.0)
 BuildRequires : pkgconfig(libinput)
+BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(pangoft2)
 BuildRequires : pkgconfig(wayland-client)
+BuildRequires : pkgconfig(wayland-cursor)
 BuildRequires : pkgconfig(wayland-server)
 BuildRequires : pkgconfig(x11)
 BuildRequires : pkgconfig(xcomposite)
 BuildRequires : pkgconfig(xext)
+BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : sed
 
 %description
@@ -95,17 +99,21 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1494632439
+export SOURCE_DATE_EPOCH=1522081770
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %configure --disable-static --enable-wayland-backend=yes \
 --enable-wayland-compositor=yes \
 --enable-evdev-input=yes \
 --enable-gdk-backend=yes \
 --enable-egl-backend=yes \
 --enable-xinput
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1494632439
+export SOURCE_DATE_EPOCH=1522081770
 rm -rf %{buildroot}
 %make_install
 %find_lang clutter-1.0
@@ -258,6 +266,7 @@ rm -rf %{buildroot}
 /usr/include/clutter-1.0/clutter/deprecated/clutter-util.h
 /usr/include/clutter-1.0/clutter/egl/clutter-egl-headers.h
 /usr/include/clutter-1.0/clutter/egl/clutter-egl.h
+/usr/include/clutter-1.0/clutter/evdev/clutter-evdev.h
 /usr/include/clutter-1.0/clutter/gdk/clutter-gdk.h
 /usr/include/clutter-1.0/clutter/glx/clutter-glx-texture-pixmap.h
 /usr/include/clutter-1.0/clutter/glx/clutter-glx.h

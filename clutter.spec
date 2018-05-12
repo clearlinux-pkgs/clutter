@@ -4,7 +4,7 @@
 #
 Name     : clutter
 Version  : 1.26.2
-Release  : 16
+Release  : 17
 URL      : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.2.tar.xz
 Source0  : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.2.tar.xz
 Summary  : Clutter Core Library
@@ -14,7 +14,6 @@ Requires: clutter-data
 Requires: clutter-lib
 Requires: clutter-doc
 Requires: clutter-locales
-BuildRequires : compositeproto-dev
 BuildRequires : docbook-xml
 BuildRequires : gettext
 BuildRequires : gobject-introspection-dev
@@ -41,6 +40,7 @@ BuildRequires : pkgconfig(xcomposite)
 BuildRequires : pkgconfig(xext)
 BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : sed
+BuildRequires : xorgproto-dev
 
 %description
 ===============================================================================
@@ -99,7 +99,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1522081770
+export SOURCE_DATE_EPOCH=1526135142
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -113,7 +113,7 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semanti
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1522081770
+export SOURCE_DATE_EPOCH=1526135142
 rm -rf %{buildroot}
 %make_install
 %find_lang clutter-1.0

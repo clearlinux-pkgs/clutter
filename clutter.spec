@@ -4,7 +4,7 @@
 #
 Name     : clutter
 Version  : 1.26.2
-Release  : 17
+Release  : 18
 URL      : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.2.tar.xz
 Source0  : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.2.tar.xz
 Summary  : Clutter Core Library

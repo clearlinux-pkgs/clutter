@@ -4,16 +4,17 @@
 #
 Name     : clutter
 Version  : 1.26.2
-Release  : 18
+Release  : 19
 URL      : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.2.tar.xz
 Source0  : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.2.tar.xz
-Summary  : Clutter Core Library
+Summary  : A toolkit for creating fast, portable, compelling dynamic UIs
 Group    : Development/Tools
 License  : LGPL-2.1
-Requires: clutter-data
-Requires: clutter-lib
-Requires: clutter-doc
-Requires: clutter-locales
+Requires: clutter-data = %{version}-%{release}
+Requires: clutter-lib = %{version}-%{release}
+Requires: clutter-license = %{version}-%{release}
+Requires: clutter-locales = %{version}-%{release}
+BuildRequires : buildreq-gnome
 BuildRequires : docbook-xml
 BuildRequires : gettext
 BuildRequires : gobject-introspection-dev
@@ -22,6 +23,7 @@ BuildRequires : gtk-doc-dev
 BuildRequires : libXcomposite-dev
 BuildRequires : libevdev-dev
 BuildRequires : libxslt-bin
+BuildRequires : mesa-dev
 BuildRequires : perl(XML::Parser)
 BuildRequires : pkgconfig(cogl-1.0)
 BuildRequires : pkgconfig(egl)
@@ -30,7 +32,6 @@ BuildRequires : pkgconfig(gdk-pixbuf-2.0)
 BuildRequires : pkgconfig(gudev-1.0)
 BuildRequires : pkgconfig(json-glib-1.0)
 BuildRequires : pkgconfig(libinput)
-BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(pangoft2)
 BuildRequires : pkgconfig(wayland-client)
 BuildRequires : pkgconfig(wayland-cursor)
@@ -58,9 +59,10 @@ data components for the clutter package.
 %package dev
 Summary: dev components for the clutter package.
 Group: Development
-Requires: clutter-lib
-Requires: clutter-data
-Provides: clutter-devel
+Requires: clutter-lib = %{version}-%{release}
+Requires: clutter-data = %{version}-%{release}
+Provides: clutter-devel = %{version}-%{release}
+Requires: clutter = %{version}-%{release}
 
 %description dev
 dev components for the clutter package.
@@ -77,10 +79,19 @@ doc components for the clutter package.
 %package lib
 Summary: lib components for the clutter package.
 Group: Libraries
-Requires: clutter-data
+Requires: clutter-data = %{version}-%{release}
+Requires: clutter-license = %{version}-%{release}
 
 %description lib
 lib components for the clutter package.
+
+
+%package license
+Summary: license components for the clutter package.
+Group: Default
+
+%description license
+license components for the clutter package.
 
 
 %package locales
@@ -93,13 +104,16 @@ locales components for the clutter package.
 
 %prep
 %setup -q -n clutter-1.26.2
+pushd ..
+cp -a clutter-1.26.2 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1526135142
+export SOURCE_DATE_EPOCH=1555426458
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -112,9 +126,28 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semanti
 --enable-xinput
 make  %{?_smp_mflags}
 
+unset PKG_CONFIG_PATH
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=haswell"
+export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
+export LDFLAGS="$LDFLAGS -m64 -march=haswell"
+%configure --disable-static --enable-wayland-backend=yes \
+--enable-wayland-compositor=yes \
+--enable-evdev-input=yes \
+--enable-gdk-backend=yes \
+--enable-egl-backend=yes \
+--enable-xinput
+make  %{?_smp_mflags}
+popd
 %install
-export SOURCE_DATE_EPOCH=1526135142
+export SOURCE_DATE_EPOCH=1555426458
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/clutter
+cp COPYING %{buildroot}/usr/share/package-licenses/clutter/COPYING
+cp doc/reference/html/license.html %{buildroot}/usr/share/package-licenses/clutter/doc_reference_html_license.html
+pushd ../buildavx2/
+%make_install_avx2
+popd
 %make_install
 %find_lang clutter-1.0
 
@@ -275,6 +308,8 @@ rm -rf %{buildroot}
 /usr/include/clutter-1.0/clutter/wayland/clutter-wayland.h
 /usr/include/clutter-1.0/clutter/x11/clutter-x11-texture-pixmap.h
 /usr/include/clutter-1.0/clutter/x11/clutter-x11.h
+/usr/lib64/haswell/libclutter-1.0.so
+/usr/lib64/haswell/libclutter-glx-1.0.so
 /usr/lib64/libclutter-1.0.so
 /usr/lib64/libclutter-glx-1.0.so
 /usr/lib64/pkgconfig/cally-1.0.pc
@@ -288,7 +323,7 @@ rm -rf %{buildroot}
 /usr/lib64/pkgconfig/clutter-x11-1.0.pc
 
 %files doc
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 /usr/share/gtk-doc/html/clutter/CallyActor.html
 /usr/share/gtk-doc/html/clutter/CallyClone.html
 /usr/share/gtk-doc/html/clutter/CallyGroup.html
@@ -467,9 +502,17 @@ rm -rf %{buildroot}
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/haswell/libclutter-1.0.so.0
+/usr/lib64/haswell/libclutter-1.0.so.0.2600.2
+/usr/lib64/haswell/libclutter-glx-1.0.so.0
 /usr/lib64/libclutter-1.0.so.0
 /usr/lib64/libclutter-1.0.so.0.2600.2
 /usr/lib64/libclutter-glx-1.0.so.0
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/clutter/COPYING
+/usr/share/package-licenses/clutter/doc_reference_html_license.html
 
 %files locales -f clutter-1.0.lang
 %defattr(-,root,root,-)

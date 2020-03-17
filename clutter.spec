@@ -4,10 +4,10 @@
 #
 Name     : clutter
 Version  : 1.26.2
-Release  : 21
+Release  : 22
 URL      : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.2.tar.xz
 Source0  : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.2.tar.xz
-Summary  : A toolkit for creating fast, portable, compelling dynamic UIs
+Summary  : Clutter Core Library
 Group    : Development/Tools
 License  : LGPL-2.1
 Requires: clutter-data = %{version}-%{release}
@@ -104,6 +104,7 @@ locales components for the clutter package.
 
 %prep
 %setup -q -n clutter-1.26.2
+cd %{_builddir}/clutter-1.26.2
 pushd ..
 cp -a clutter-1.26.2 buildavx2
 popd
@@ -112,8 +113,9 @@ popd
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1556994471
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1584477896
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -139,15 +141,15 @@ export LDFLAGS="$LDFLAGS -m64 -march=haswell"
 --enable-evdev-input=yes \
 --enable-gdk-backend=yes \
 --enable-egl-backend=yes \
---enable-xinput
+--enable-xinput --disable-introspection --disable-gtk-doc
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1556994471
+export SOURCE_DATE_EPOCH=1584477896
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/clutter
-cp COPYING %{buildroot}/usr/share/package-licenses/clutter/COPYING
-cp doc/reference/html/license.html %{buildroot}/usr/share/package-licenses/clutter/doc_reference_html_license.html
+cp %{_builddir}/clutter-1.26.2/COPYING %{buildroot}/usr/share/package-licenses/clutter/01a6b4bf79aca9b556822601186afab86e8c4fbf
+cp %{_builddir}/clutter-1.26.2/doc/reference/html/license.html %{buildroot}/usr/share/package-licenses/clutter/19635e262e81479760b4313330c76b99de1be815
 pushd ../buildavx2/
 %make_install_avx2
 popd
@@ -514,8 +516,8 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/clutter/COPYING
-/usr/share/package-licenses/clutter/doc_reference_html_license.html
+/usr/share/package-licenses/clutter/01a6b4bf79aca9b556822601186afab86e8c4fbf
+/usr/share/package-licenses/clutter/19635e262e81479760b4313330c76b99de1be815
 
 %files locales -f clutter-1.0.lang
 %defattr(-,root,root,-)

@@ -4,13 +4,14 @@
 #
 Name     : clutter
 Version  : 1.26.4
-Release  : 25
+Release  : 26
 URL      : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.4.tar.xz
 Source0  : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.4.tar.xz
 Summary  : Clutter Core Library
 Group    : Development/Tools
 License  : LGPL-2.0 LGPL-2.1
 Requires: clutter-data = %{version}-%{release}
+Requires: clutter-filemap = %{version}-%{release}
 Requires: clutter-lib = %{version}-%{release}
 Requires: clutter-license = %{version}-%{release}
 Requires: clutter-locales = %{version}-%{release}
@@ -76,11 +77,20 @@ Group: Documentation
 doc components for the clutter package.
 
 
+%package filemap
+Summary: filemap components for the clutter package.
+Group: Default
+
+%description filemap
+filemap components for the clutter package.
+
+
 %package lib
 Summary: lib components for the clutter package.
 Group: Libraries
 Requires: clutter-data = %{version}-%{release}
 Requires: clutter-license = %{version}-%{release}
+Requires: clutter-filemap = %{version}-%{release}
 
 %description lib
 lib components for the clutter package.
@@ -114,15 +124,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1586213601
+export SOURCE_DATE_EPOCH=1633737780
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
 %configure --disable-static --enable-wayland-backend=yes \
 --enable-wayland-compositor=yes \
 --enable-evdev-input=yes \
@@ -133,11 +143,11 @@ make  %{?_smp_mflags}
 
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
-export CFLAGS="$CFLAGS -m64 -march=haswell"
-export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
-export FFLAGS="$FFLAGS -m64 -march=haswell"
-export FCFLAGS="$FCFLAGS -m64 -march=haswell"
-export LDFLAGS="$LDFLAGS -m64 -march=haswell"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 %configure --disable-static --enable-wayland-backend=yes \
 --enable-wayland-compositor=yes \
 --enable-evdev-input=yes \
@@ -147,13 +157,14 @@ export LDFLAGS="$LDFLAGS -m64 -march=haswell"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1586213601
+export SOURCE_DATE_EPOCH=1633737780
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/clutter
 cp %{_builddir}/clutter-1.26.4/COPYING %{buildroot}/usr/share/package-licenses/clutter/01a6b4bf79aca9b556822601186afab86e8c4fbf
 cp %{_builddir}/clutter-1.26.4/doc/reference/html/license.html %{buildroot}/usr/share/package-licenses/clutter/9cc6b307b71af5508e15bc0bdcb1bb1bc92443c0
 pushd ../buildavx2/
-%make_install_avx2
+%make_install_v3
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 %make_install
 %find_lang clutter-1.0
@@ -316,8 +327,6 @@ popd
 /usr/include/clutter-1.0/clutter/wayland/clutter-wayland.h
 /usr/include/clutter-1.0/clutter/x11/clutter-x11-texture-pixmap.h
 /usr/include/clutter-1.0/clutter/x11/clutter-x11.h
-/usr/lib64/haswell/libclutter-1.0.so
-/usr/lib64/haswell/libclutter-glx-1.0.so
 /usr/lib64/libclutter-1.0.so
 /usr/lib64/libclutter-glx-1.0.so
 /usr/lib64/pkgconfig/cally-1.0.pc
@@ -508,14 +517,16 @@ popd
 /usr/share/gtk-doc/html/clutter/up.png
 /usr/share/gtk-doc/html/clutter/using-cairo.html
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-clutter
+
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/haswell/libclutter-1.0.so.0
-/usr/lib64/haswell/libclutter-1.0.so.0.2600.4
-/usr/lib64/haswell/libclutter-glx-1.0.so.0
 /usr/lib64/libclutter-1.0.so.0
 /usr/lib64/libclutter-1.0.so.0.2600.4
 /usr/lib64/libclutter-glx-1.0.so.0
+/usr/share/clear/optimized-elf/lib*
 
 %files license
 %defattr(0644,root,root,0755)

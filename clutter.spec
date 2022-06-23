@@ -4,14 +4,13 @@
 #
 Name     : clutter
 Version  : 1.26.4
-Release  : 30
+Release  : 31
 URL      : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.4.tar.xz
 Source0  : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.4.tar.xz
 Summary  : Clutter Core Library
 Group    : Development/Tools
 License  : LGPL-2.0 LGPL-2.1
 Requires: clutter-data = %{version}-%{release}
-Requires: clutter-filemap = %{version}-%{release}
 Requires: clutter-lib = %{version}-%{release}
 Requires: clutter-license = %{version}-%{release}
 Requires: clutter-locales = %{version}-%{release}
@@ -77,20 +76,11 @@ Group: Documentation
 doc components for the clutter package.
 
 
-%package filemap
-Summary: filemap components for the clutter package.
-Group: Default
-
-%description filemap
-filemap components for the clutter package.
-
-
 %package lib
 Summary: lib components for the clutter package.
 Group: Libraries
 Requires: clutter-data = %{version}-%{release}
 Requires: clutter-license = %{version}-%{release}
-Requires: clutter-filemap = %{version}-%{release}
 
 %description lib
 lib components for the clutter package.
@@ -124,15 +114,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1634665867
+export SOURCE_DATE_EPOCH=1656011236
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
 %configure --disable-static --enable-wayland-backend=yes \
 --enable-wayland-compositor=yes \
 --enable-evdev-input=yes \
@@ -157,7 +147,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1634665867
+export SOURCE_DATE_EPOCH=1656011236
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/clutter
 cp %{_builddir}/clutter-1.26.4/COPYING %{buildroot}/usr/share/package-licenses/clutter/01a6b4bf79aca9b556822601186afab86e8c4fbf
@@ -167,7 +157,7 @@ pushd ../buildavx2/
 popd
 %make_install
 %find_lang clutter-1.0
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -517,16 +507,16 @@ popd
 /usr/share/gtk-doc/html/clutter/up.png
 /usr/share/gtk-doc/html/clutter/using-cairo.html
 
-%files filemap
-%defattr(-,root,root,-)
-/usr/share/clear/filemap/filemap-clutter
-
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-1.0.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-1.0.so.0
+/usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-1.0.so.0.2600.4
+/usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-glx-1.0.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-glx-1.0.so.0
 /usr/lib64/libclutter-1.0.so.0
 /usr/lib64/libclutter-1.0.so.0.2600.4
 /usr/lib64/libclutter-glx-1.0.so.0
-/usr/share/clear/optimized-elf/lib*
 
 %files license
 %defattr(0644,root,root,0755)

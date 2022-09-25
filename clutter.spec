@@ -4,7 +4,7 @@
 #
 Name     : clutter
 Version  : 1.26.4
-Release  : 37
+Release  : 38
 URL      : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.4.tar.xz
 Source0  : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.4.tar.xz
 Summary  : Clutter Core Library
@@ -114,7 +114,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656097958
+export SOURCE_DATE_EPOCH=1664140393
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -147,11 +147,11 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1656097958
+export SOURCE_DATE_EPOCH=1664140393
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/clutter
-cp %{_builddir}/clutter-1.26.4/COPYING %{buildroot}/usr/share/package-licenses/clutter/01a6b4bf79aca9b556822601186afab86e8c4fbf
-cp %{_builddir}/clutter-1.26.4/doc/reference/html/license.html %{buildroot}/usr/share/package-licenses/clutter/9cc6b307b71af5508e15bc0bdcb1bb1bc92443c0
+cp %{_builddir}/clutter-%{version}/COPYING %{buildroot}/usr/share/package-licenses/clutter/01a6b4bf79aca9b556822601186afab86e8c4fbf || :
+cp %{_builddir}/clutter-%{version}/doc/reference/html/license.html %{buildroot}/usr/share/package-licenses/clutter/9cc6b307b71af5508e15bc0bdcb1bb1bc92443c0 || :
 pushd ../buildavx2/
 %make_install_v3
 popd
@@ -317,6 +317,8 @@ popd
 /usr/include/clutter-1.0/clutter/wayland/clutter-wayland.h
 /usr/include/clutter-1.0/clutter/x11/clutter-x11-texture-pixmap.h
 /usr/include/clutter-1.0/clutter/x11/clutter-x11.h
+/usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-1.0.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-glx-1.0.so
 /usr/lib64/libclutter-1.0.so
 /usr/lib64/libclutter-glx-1.0.so
 /usr/lib64/pkgconfig/cally-1.0.pc
@@ -509,10 +511,8 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-1.0.so
 /usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-1.0.so.0
 /usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-1.0.so.0.2600.4
-/usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-glx-1.0.so
 /usr/lib64/glibc-hwcaps/x86-64-v3/libclutter-glx-1.0.so.0
 /usr/lib64/libclutter-1.0.so.0
 /usr/lib64/libclutter-1.0.so.0.2600.4

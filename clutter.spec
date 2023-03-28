@@ -5,7 +5,7 @@
 #
 Name     : clutter
 Version  : 1.26.4
-Release  : 41
+Release  : 42
 URL      : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.4.tar.xz
 Source0  : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.4.tar.xz
 Summary  : Clutter Core Library
@@ -25,6 +25,8 @@ BuildRequires : libevdev-dev
 BuildRequires : mesa-dev
 BuildRequires : pkgconfig(cogl-1.0)
 BuildRequires : pkgconfig(json-glib-1.0)
+BuildRequires : pkgconfig(libinput)
+BuildRequires : pkgconfig(wayland-server)
 BuildRequires : pkgconfig(xcomposite)
 BuildRequires : pkgconfig(xext)
 BuildRequires : xorgproto-dev
@@ -102,7 +104,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1680019108
+export SOURCE_DATE_EPOCH=1680019828
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -135,7 +137,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1680019108
+export SOURCE_DATE_EPOCH=1680019828
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/clutter
 cp %{_builddir}/clutter-%{version}/COPYING %{buildroot}/usr/share/package-licenses/clutter/01a6b4bf79aca9b556822601186afab86e8c4fbf || :

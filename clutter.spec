@@ -5,7 +5,7 @@
 #
 Name     : clutter
 Version  : 1.26.4
-Release  : 45
+Release  : 46
 URL      : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.4.tar.xz
 Source0  : https://download.gnome.org/sources/clutter/1.26/clutter-1.26.4.tar.xz
 Summary  : Clutter Core Library
@@ -118,15 +118,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1682703244
+export SOURCE_DATE_EPOCH=1685488937
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 %configure --disable-static --enable-wayland-backend=yes \
 --enable-wayland-compositor=yes \
 --enable-evdev-input=yes \
@@ -151,7 +151,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1682703244
+export SOURCE_DATE_EPOCH=1685488937
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/clutter
 cp %{_builddir}/clutter-%{version}/COPYING %{buildroot}/usr/share/package-licenses/clutter/01a6b4bf79aca9b556822601186afab86e8c4fbf || :
@@ -177,8 +177,6 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/V3/usr/lib64/libclutter-1.0.so
-/V3/usr/lib64/libclutter-glx-1.0.so
 /usr/include/clutter-1.0/cally/cally-actor.h
 /usr/include/clutter-1.0/cally/cally-clone.h
 /usr/include/clutter-1.0/cally/cally-factory.h
@@ -515,9 +513,7 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/libclutter-1.0.so.0
 /V3/usr/lib64/libclutter-1.0.so.0.2600.4
-/V3/usr/lib64/libclutter-glx-1.0.so.0
 /usr/lib64/libclutter-1.0.so.0
 /usr/lib64/libclutter-1.0.so.0.2600.4
 /usr/lib64/libclutter-glx-1.0.so.0
